@@ -27,6 +27,7 @@ public:
 				std::string wordHolder = "";
 				// Iteratating through the getline
 				std::string::iterator it;
+				std::string::iterator itNext;
 
 				for (it = lineHolder.begin(); it != lineHolder.end(); it++)
 				{
@@ -46,7 +47,15 @@ public:
 					{
 						wordHolder += *it;
 					}
-					else if (*it == ' ' && !stopOnSemi)
+					if (*it != lineHolder[lineHolder.size() - 1])
+					{
+						itNext = std::next(it, 1);
+					}
+					if (*itNext == NULL)
+					{
+						break;
+					}
+					if ((*itNext == ' ' && !stopOnSemi) || (*it == lineHolder[lineHolder.size() - 1] && !stopOnSemi))
 					{
 						// Check if word is reserved
 						if (wordHolder == "PROGRAM")
