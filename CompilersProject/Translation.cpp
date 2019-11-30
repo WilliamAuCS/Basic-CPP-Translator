@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 class TranslateToCode
 {
@@ -18,8 +19,10 @@ public:
 			bool isFileName = false;
 			bool isVAR = false;
 			bool isDataType = false;
-			std::string temp1 = "";
-			std::string temp2 = "";
+			std::string temp1 = "";		// Used to store reserved words
+			std::string temp2 = "";		// Used to store non-reserved words (variable names etc.)
+			// Creating vector to store output by line
+			std::vector<std::string> ans;
 			while (!myfile.eof())
 			{
 				// Getting one line document
@@ -51,10 +54,6 @@ public:
 					{
 						itNext = std::next(it, 1);
 					}
-					if (*itNext == NULL)
-					{
-						break;
-					}
 					if ((*itNext == ' ' && !stopOnSemi) || (*it == lineHolder[lineHolder.size() - 1] && !stopOnSemi))
 					{
 						// Check if word is reserved
@@ -62,7 +61,6 @@ public:
 						{
 							stopOnSemi = true;
 							isFileName = true;
-							wordHolder = "";
 						}
 						else if (wordHolder == "VAR")
 						{
@@ -72,6 +70,7 @@ public:
 						{
 							if (wordHolder != ":")
 							{
+								wordHolder += " ";
 								temp2 += wordHolder;
 							}
 							else
@@ -83,31 +82,32 @@ public:
 						{
 							if (wordHolder == "INTEGER")
 							{
-								temp1 = "int";
+								temp1 = "int ";
 							}
 							else if (wordHolder == "DOUBLE")
 							{
-								temp1 = "double";
+								temp1 = "double ";
 							}
 							else if (wordHolder == "FLOAT")
 							{
-								temp1 = "float";
+								temp1 = "float ";
 							}
 							else if (wordHolder == "BOOLEAN")
 							{
-								temp1 = "bool";
+								temp1 = "bool ";
 							}
 						}
-
+						wordHolder = "";
 					}
 				}
-				newFile << temp1 + " " + temp2;
+				ans.push_back(temp1 + temp2);
 			}
 			myfile.close();
 		}
 		else
 		{
 			std::cout << "File could not be opened" << std::endl;
+			return;
 		}
 	}
 };
