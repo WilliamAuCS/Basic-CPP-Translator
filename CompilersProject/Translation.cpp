@@ -19,8 +19,6 @@ public:
 			bool isFileName = false;
 			bool isVAR = false;
 			bool isDataType = false;
-			std::string temp1 = "";		// Used to store reserved words
-			std::string temp2 = "";		// Used to store non-reserved words (variable names etc.)
 			// Creating vector to store output by line
 			std::vector<std::string> ans;
 			while (!myfile.eof())
@@ -31,6 +29,8 @@ public:
 				// Iteratating through the getline
 				std::string::iterator it;
 				std::string::iterator itNext;
+				std::string temp1 = "";		// Used to store reserved words
+				std::string temp2 = "";		// Used to store non-reserved words (variable names etc.)
 
 				for (it = lineHolder.begin(); it != lineHolder.end(); it++)
 				{
@@ -46,7 +46,7 @@ public:
 						}
 					}
 					// Places next character into word string
-					else if (*it != ' ')
+					else if (*it != ' ' && *it != ':')
 					{
 						wordHolder += *it;
 					}
@@ -54,28 +54,28 @@ public:
 					{
 						itNext = std::next(it, 1);
 					}
-					if ((*itNext == ' ' && !stopOnSemi) || (*it == lineHolder[lineHolder.size() - 1] && !stopOnSemi))
+					if ((*itNext == ' ' && !stopOnSemi) || (*it == lineHolder[lineHolder.size() - 1] && !stopOnSemi) || *itNext == ':' || *itNext == ';')
 					{
 						// Check if word is reserved
 						if (wordHolder == "PROGRAM")
 						{
 							stopOnSemi = true;
 							isFileName = true;
+							wordHolder = "";
 						}
 						else if (wordHolder == "VAR")
 						{
 							isVAR = true;
+							wordHolder = "";
 						}
 						else if (isVAR)
 						{
-							if (wordHolder != ":")
+							if (*itNext == ':')
 							{
-								wordHolder += " ";
-								temp2 += wordHolder;
-							}
-							else
-							{
-								isDataType = true;
+								isDataType = true; 
+								temp2 = wordHolder;
+								wordHolder = "";
+								isVAR = false;
 							}
 						}
 						else if (isDataType)
@@ -83,26 +83,42 @@ public:
 							if (wordHolder == "INTEGER")
 							{
 								temp1 = "int ";
+								isDataType = false;
+								wordHolder = "";
 							}
 							else if (wordHolder == "DOUBLE")
 							{
 								temp1 = "double ";
+								isDataType = false;
+								wordHolder = "";
 							}
 							else if (wordHolder == "FLOAT")
 							{
 								temp1 = "float ";
+								isDataType = false;
+								wordHolder = "";
 							}
 							else if (wordHolder == "BOOLEAN")
 							{
 								temp1 = "bool ";
+								isDataType = false;
+								wordHolder = "";
 							}
 						}
-						wordHolder = "";
 					}
 				}
-				ans.push_back(temp1 + temp2);
+				if (temp1 != "" && temp2 != "")
+				{
+					temp2 += ";";
+					ans.push_back(temp1 + temp2);
+				}
 			}
 			myfile.close();
+			std::vector<std::string>::iterator it;
+			for (it = ans.begin(); it != ans.end(); it++)
+			{
+				std::cout << *it << std::endl;
+			}
 		}
 		else
 		{
