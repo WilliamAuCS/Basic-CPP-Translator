@@ -19,6 +19,8 @@ public:
 			bool isFileName = false;
 			bool isVAR = false;
 			bool isDataType = false;
+			bool hasBegan = false;
+			bool insFront = false;
 			// Creating vector to store output by line
 			std::vector<std::string> ans;
 			while (!myfile.eof())
@@ -68,6 +70,12 @@ public:
 							isVAR = true;
 							wordHolder = "";
 						}
+						else if (wordHolder == "BEGIN" && !hasBegan)
+						{
+							hasBegan = true;
+							temp1 = "int main()\n{";
+							insFront = true;
+						}
 						else if (isVAR)
 						{
 							if (*itNext == ':')
@@ -107,10 +115,22 @@ public:
 						}
 					}
 				}
-				if (temp1 != "" && temp2 != "")
+				if (temp1 != "" || temp2 != "")
 				{
-					temp2 += ";";
-					ans.push_back(temp1 + temp2);
+					if (insFront)
+					{
+						ans.insert(ans.begin(), temp1);
+						insFront = false;
+					}
+					else if (temp2 != "")
+					{
+						temp2 += ";";
+						ans.push_back(temp1 + temp2);
+					}
+					else
+					{
+						ans.push_back(temp1 + temp2);
+					}
 				}
 			}
 			myfile.close();
@@ -118,6 +138,12 @@ public:
 			for (it = ans.begin(); it != ans.end(); it++)
 			{
 				std::cout << *it << std::endl;
+			}
+			// Always end this way if int main() has been initiated
+			if (hasBegan)
+			{
+				std::cout << "return 0;" << std::endl;
+				std::cout << "}" << std::endl;
 			}
 		}
 		else
