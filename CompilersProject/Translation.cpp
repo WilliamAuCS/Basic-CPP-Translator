@@ -47,6 +47,10 @@ public:
 							stopOnSemi = false;
 						}
 					}
+					else if (*it == ';' && temp1 == "")
+					{
+						temp2 = wordHolder;
+					}
 					// Places next character into word string
 					else if (*it != ' ' && *it != ':')
 					{
