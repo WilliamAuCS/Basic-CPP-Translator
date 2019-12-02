@@ -21,6 +21,8 @@ public:
 			bool isDataType = false;
 			bool hasBegan = false;
 			bool insFront = false;
+			bool isPrinting = false;
+			bool openParenth = false;		// Simple boolean used in PRINT()
 			// Creating vector to store output by line
 			std::vector<std::string> ans;
 			while (!myfile.eof())
@@ -54,7 +56,39 @@ public:
 					// Places next character into word string
 					else if (*it != ' ' && *it != ':')
 					{
-						wordHolder += *it;
+						if (*it == '\'')
+						{
+							wordHolder += '\"';
+						}
+						else
+						{
+							wordHolder += *it;
+						}
+					}
+					if (wordHolder == "PRINT")
+					{
+						isPrinting = true;
+						wordHolder = "";
+						temp1 = "std::cout";
+					}
+					else if (isPrinting && (*it == '(' || *it == ')' || *it == ','))
+					{
+						if (wordHolder == "(")
+						{
+							temp1 += " << ";
+							openParenth = true;		// Used to count currently open parentheses
+							wordHolder = "";
+						}
+						else if (*it == ')')
+						{
+							wordHolder.pop_back();
+							openParenth = false;
+						}
+						else if (*it == ',')
+						{
+							wordHolder.pop_back();
+							wordHolder += " << ";
+						}
 					}
 					if (*it != lineHolder[lineHolder.size() - 1])
 					{
@@ -116,6 +150,12 @@ public:
 								isDataType = false;
 								wordHolder = "";
 							}
+						}
+						else if (isPrinting && *itNext == ';')
+						{
+							temp2 = wordHolder;
+							isPrinting = false;
+							ans.insert(ans.begin(), "#include <iostream>");
 						}
 					}
 				}
