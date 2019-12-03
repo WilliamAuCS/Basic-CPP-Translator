@@ -191,14 +191,18 @@ public:
 			std::vector<std::string>::iterator it;
 			for (it = ans.begin(); it != ans.end(); it++)
 			{
-				std::cout << *it << std::endl;
+				//std::cout << *it << std::endl;
+				newFile << *it << std::endl;
 			}
 			// Always end this way if int main() has been initiated
 			if (hasBegan && hasEnded)
 			{
-				std::cout << "return 0;" << std::endl;
-				std::cout << "}" << std::endl;
+				//std::cout << "return 0;" << std::endl;
+				//std::cout << "}" << std::endl;
+				newFile << "return 0;" << std::endl;
+				newFile << "}" << std::endl;
 			}
+			newFile.close();
 		}
 		else
 		{
