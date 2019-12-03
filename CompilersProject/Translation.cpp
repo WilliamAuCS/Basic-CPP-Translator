@@ -20,9 +20,11 @@ public:
 			bool isVAR = false;
 			bool isDataType = false;
 			bool hasBegan = false;
+			bool hasEnded = false;
 			bool insFront = false;
 			bool isPrinting = false;
 			bool openParenth = false;		// Simple boolean used in PRINT()
+			bool iostream = false;
 			// Creating vector to store output by line
 			std::vector<std::string> ans;
 			while (!myfile.eof())
@@ -70,6 +72,10 @@ public:
 						isPrinting = true;
 						wordHolder = "";
 						temp1 = "std::cout";
+					}
+					if (wordHolder == "END")
+					{
+						hasEnded = true;
 					}
 					else if (isPrinting && (*it == '(' || *it == ')' || *it == ','))
 					{
@@ -155,7 +161,11 @@ public:
 						{
 							temp2 = wordHolder;
 							isPrinting = false;
-							ans.insert(ans.begin(), "#include <iostream>");
+							if (!iostream)
+							{
+								ans.insert(ans.begin(), "#include <iostream>");
+								iostream = true;
+							}
 						}
 					}
 				}
@@ -184,7 +194,7 @@ public:
 				std::cout << *it << std::endl;
 			}
 			// Always end this way if int main() has been initiated
-			if (hasBegan)
+			if (hasBegan && hasEnded)
 			{
 				std::cout << "return 0;" << std::endl;
 				std::cout << "}" << std::endl;
@@ -195,16 +205,5 @@ public:
 			std::cout << "File could not be opened" << std::endl;
 			return;
 		}
-	}
-};
-class Tester
-{
-public:
-	void Test(std::string str)
-	{
-		char *pnt = &str[0];
-		int test1 = 556;
-		int* pnt1 = &test1;
-		std::cout << &pnt;
 	}
 };

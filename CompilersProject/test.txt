@@ -5,3 +5,8 @@ PROGRAM aba13;
   ab5 = 5;
   cb = 10;
   PRINT('ab5=', ab5);
+cb = cb + ab5;
+PRINT( cb );
+be = 2 * ab5 + eb;
+PRINT( be );
+END.
