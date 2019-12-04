@@ -17,9 +17,9 @@ PRINT( cb );
 be = 2 * ab5 + eb;
 PRINT( be );
 END.
-
+```
 To compilable C++ code:
-
+```cpp
 #include <iostream>
 int main()
 {
