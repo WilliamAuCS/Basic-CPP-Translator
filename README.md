@@ -4,6 +4,7 @@ Basic error-free grammar to compiling CPP code.
 
 Used to convert error-free contex free grammer:
 
+```cpp
 PROGRAM aba13;
 VAR
 ab5, cb, be, eb : INTEGER;
@@ -32,3 +33,4 @@ be=2*ab5+eb;
 std::cout << be;
 return 0;
 }
+```
