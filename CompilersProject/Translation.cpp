@@ -67,6 +67,11 @@ public:
 							wordHolder += *it;
 						}
 					}
+					if (isVAR && *it == ',')
+					{
+						wordHolder.pop_back();
+						wordHolder += "=0,";
+					}
 					if (wordHolder == "PRINT")
 					{
 						isPrinting = true;
@@ -124,6 +129,7 @@ public:
 						{
 							if (*itNext == ':')
 							{
+								wordHolder += "=0";
 								isDataType = true; 
 								temp2 = wordHolder;
 								wordHolder = "";
