@@ -4,7 +4,7 @@ Basic error-free grammar to compiling CPP code.
 
 Used to convert error-free contex free grammer:
 
-```cpp
+```
 PROGRAM aba13;
 VAR
 ab5, cb, be, eb : INTEGER;
@@ -23,7 +23,7 @@ To compilable C++ code:
 #include <iostream>
 int main()
 {
-int ab5,cb,be,eb;
+int ab5=0,cb=0,be=0,eb=0;
 ab5=5;
 cb=10;
 std::cout << "ab5=" << ab5;
